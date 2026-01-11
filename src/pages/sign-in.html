@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../modules/signin/signin.scss">
+	<script type="module" href="../modules/signin/signin.ts"></script>
+	<title>Online chat</title>
+</head>
+<body>
+<header>
+	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">Online chat</a>
+			<a href="/sign-in"><button class="btn btn-outline-success" type="submit">Sign in</button></a>
+		</div>
+	</nav>
+</header>
+<main class="container-lg">
+	<form class="sign-in-form">
+		<fieldset>
+			<legend class="heading">Sign in</legend>
+		<div class="mb-3">
+			<label for="emailInput" class="form-label">Email address</label>
+			<input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp">
+		</div>
+		<div class="mb-3">
+			<label for="passwordInput" class="form-label">Password</label>
+			<input type="password" class="form-control" id="passwordInput">
+		</div>
+		<button id="loginSubmit" type="submit" class="btn btn-primary">Submit</button>
+		</fieldset>
+	</form>
+</main>
+<footer>
+
+</footer>
+</body>
+</html>
