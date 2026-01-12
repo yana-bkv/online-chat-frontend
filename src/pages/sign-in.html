@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../main.scss">
+	<script type="module" src="../main.ts"></script>
+
 	<link rel="stylesheet" href="../modules/signin/signin.scss">
-	<script type="module" href="../modules/signin/signin.ts"></script>
+	<script type="module" src="../modules/signin/signin.ts"></script>
 	<title>Online chat</title>
 </head>
 <body>
@@ -16,18 +19,18 @@
 	</nav>
 </header>
 <main class="container-lg">
-	<form class="sign-in-form">
+	<form id="signInForm" class="sign-in-form">
 		<fieldset>
 			<legend class="heading">Sign in</legend>
-		<div class="mb-3">
-			<label for="emailInput" class="form-label">Email address</label>
-			<input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp">
-		</div>
-		<div class="mb-3">
-			<label for="passwordInput" class="form-label">Password</label>
-			<input type="password" class="form-control" id="passwordInput">
-		</div>
-		<button id="loginSubmit" type="submit" class="btn btn-primary">Submit</button>
+			<div class="mb-3">
+				<label for="emailInput" class="form-label">Email address</label>
+				<input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp">
+			</div>
+			<div class="mb-3">
+				<label for="passwordInput" class="form-label">Password</label>
+				<input type="password" class="form-control" id="passwordInput">
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
 		</fieldset>
 	</form>
 </main>
