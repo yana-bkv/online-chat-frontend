@@ -5,8 +5,8 @@
 	<link rel="stylesheet" href="../main.scss">
 	<script type="module" src="../main.ts"></script>
 
-	<link rel="stylesheet" href="../modules/signin/signin.scss">
-	<script type="module" src="../modules/signin/signin.ts"></script>
+	<link rel="stylesheet" href="../modules/sign-up/sign-up.scss">
+	<script type="module" src="../modules/sign-up/sign-up.ts"></script>
 	<title>Online chat</title>
 </head>
 <body>
@@ -14,14 +14,23 @@
 	<nav class="navbar navbar-expand-lg bg-body-tertiary">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="/">Online chat</a>
-			<a href="/sign-in"><button class="btn btn-outline-success" type="submit">Sign in</button></a>
+			<a href="/sign-in"><button class="btn btn-outline-success" type="submit">Sign up</button></a>
 		</div>
 	</nav>
 </header>
 <main class="container-lg">
-	<form id="signInForm" class="sign-in-form">
+	<form id="signUpForm" class="sign-up-form">
 		<fieldset>
-			<legend class="heading">Sign in</legend>
+			<legend class="heading">Sign up</legend>
+
+			<div class="mb-3">
+				<label for="nameInput" class="form-label">Name</label>
+				<input type="text" class="form-control" id="nameInput" aria-describedby="nameHelp">
+				<div id="nameInvalidFeedback" class="invalid-feedback">
+
+				</div>
+			</div>
+
 			<div class="mb-3">
 				<label for="emailInput" class="form-label">Email address</label>
 				<input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp">
@@ -36,9 +45,17 @@
 
 				</div>
 			</div>
+
+			<div class="mb-3">
+				<label for="confirmPasswordInput" class="form-label">Confirm password</label>
+				<input type="password" class="form-control" id="confirmPasswordInput">
+				<div id="confirmPasswordInvalidFeedback" class="invalid-feedback">
+
+				</div>
+			</div>
 			<button type="submit" class="btn btn-primary">Submit</button>
 		</fieldset>
-		<a href="/sign-up">Don't have an account? Register</a>
+		<a href="/sign-in">Already have an account? Login</a>
 	</form>
 </main>
 <footer>
