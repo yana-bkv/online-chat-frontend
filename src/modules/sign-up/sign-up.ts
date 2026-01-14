@@ -1,7 +1,6 @@
 import 'bootstrap/dist/js/bootstrap.min.js';
 
 import SignUpFormService from "./services/sign-up-form.service";
-import ToasterService from "../../shared/services/toaster.service";
 
 const signUpForm: HTMLFormElement | null = document.querySelector('#signUpForm');
 
@@ -20,6 +19,8 @@ if (nameInput && emailInput && passwordInput && confirmPasswordInput && signUpFo
 
     const signInFormService = new SignUpFormService(signUpForm, nameInput, emailInput, passwordInput, confirmPasswordInput, nameInvalidFeedback, emailInvalidFeedback, passwordInvalidFeedback, confirmPasswordInvalidFeedback);
     void signInFormService.handleSubmitEvent();
+    void signInFormService.handleNameKeyUp();
     void signInFormService.handleEmailKeyUp();
     void signInFormService.handlePasswordKeyUp();
+    void signInFormService.handleConfirmedPasswordKeyUp();
 }

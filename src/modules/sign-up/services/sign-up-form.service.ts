@@ -1,22 +1,32 @@
 export default class SignUpFormService {
+    private emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    private passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,24}$/;
+
     constructor(
         private signUpForm: HTMLFormElement,
 
         private nameInput: HTMLInputElement,
         private emailInput: HTMLInputElement,
         private passwordInput: HTMLInputElement,
-        private confirmPasswordInput: HTMLInputElement,
+        private confirmedPasswordInput: HTMLInputElement,
 
         private nameInvalidFeedback: HTMLDivElement,
         private emailInvalidFeedback: HTMLDivElement,
         private passwordInvalidFeedback: HTMLDivElement,
-        private confirmPasswordInvalidFeedback: HTMLDivElement,
+        private confirmedPasswordInvalidFeedback: HTMLDivElement,
     ) {}
 
     async handleSubmitEvent() {
         this.signUpForm?.addEventListener('submit', async (e) => {
             e.preventDefault();
             void this.login();
+        })
+    }
+
+    async handleNameKeyUp() {
+        this.nameInput?.addEventListener('keyup', async (e) => {
+            e.preventDefault();
+            this.hideValidationError(this.nameInput, this.nameInvalidFeedback);
         })
     }
 
@@ -34,16 +44,22 @@ export default class SignUpFormService {
         })
     }
 
+    async handleConfirmedPasswordKeyUp() {
+        this.confirmedPasswordInput?.addEventListener('keyup', async (e) => {
+            e.preventDefault();
+            this.hideValidationError(this.confirmedPasswordInput, this.confirmedPasswordInvalidFeedback);
+        })
+    }
+
     async login() {
 
         try {
-            // TODO сделать проверку regex и в целом разные ошибки под полями
             let hasErrors = false;
 
             const name = this.nameInput.value.trim();
             const email = this.emailInput.value.trim();
             const password = this.passwordInput.value.trim();
-            const confirmPassword = this.confirmPasswordInput.value.trim();
+            const confirmPassword = this.confirmedPasswordInput.value.trim();
 
             if (!name) {
                 this.showValidationError(this.nameInput, this.nameInvalidFeedback, 'Name is invalid');
@@ -51,17 +67,31 @@ export default class SignUpFormService {
             }
 
             if (!email) {
-                this.showValidationError(this.emailInput, this.emailInvalidFeedback, 'Email is invalid');
+                this.showValidationError(this.emailInput, this.emailInvalidFeedback, 'Please enter email');
+                hasErrors = true;
+            } else if (!email.match(this.emailRegex)) {
+                this.showValidationError(this.emailInput, this.emailInvalidFeedback, 'Email is not valid');
                 hasErrors = true;
             }
 
             if (!password) {
-                this.showValidationError(this.passwordInput, this.passwordInvalidFeedback, 'Password is invalid');
+                this.showValidationError(this.passwordInput, this.passwordInvalidFeedback, 'Please enter password');
+                hasErrors = true;
+            }
+            else if (!(password.length >= 8 && password.length <= 24)) {
+                this.showValidationError(this.passwordInput, this.passwordInvalidFeedback, 'Password should be at least 8 characters and minimum 24');
+                hasErrors = true;
+            } else if (!password.match(this.passwordRegex)) {
+                this.showValidationError(this.passwordInput, this.passwordInvalidFeedback, 'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character');
                 hasErrors = true;
             }
 
-            if (!confirmPassword) {
-                this.showValidationError(this.confirmPasswordInput, this.confirmPasswordInvalidFeedback, 'Confirmed password is invalid');
+            if (!password) {
+                this.showValidationError(this.confirmedPasswordInput, this.confirmedPasswordInvalidFeedback, 'Please enter confirmed password');
+                hasErrors = true;
+            }
+            else if (confirmPassword !== password) {
+                this.showValidationError(this.confirmedPasswordInput, this.confirmedPasswordInvalidFeedback, 'Confirmed password and password do not match');
                 hasErrors = true;
             }
 
