@@ -1,9 +1,12 @@
+import {UsersApiServiceInterface} from "../../users/services/users-api.types";
+
 export default class SignUpFormService {
     private emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     private passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,24}$/;
 
     constructor(
         private signUpForm: HTMLFormElement,
+        private apiService: UsersApiServiceInterface,
 
         private nameInput: HTMLInputElement,
         private emailInput: HTMLInputElement,
@@ -99,8 +102,10 @@ export default class SignUpFormService {
                 return
             }
 
-            // const data = await this.apiService.login(email, password);
-
+            const data = await this.apiService.register(name, email, password, confirmPassword);
+            if (data?.email) {
+                location.href = "/sign-in?email=" + data.email;
+            }
         }
         catch (error: | Error | unknown) {
             console.error(error);

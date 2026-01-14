@@ -1,6 +1,8 @@
 import 'bootstrap/dist/js/bootstrap.min.js';
 
 import SignUpFormService from "./services/sign-up-form.service";
+import UsersApiService from "../users/services/users-api.service";
+import ToasterService from "../../shared/services/toaster.service";
 
 const signUpForm: HTMLFormElement | null = document.querySelector('#signUpForm');
 
@@ -15,9 +17,10 @@ const passwordInvalidFeedback: HTMLDivElement | null = document.querySelector('#
 const confirmPasswordInvalidFeedback: HTMLDivElement | null = document.querySelector('#confirmPasswordInvalidFeedback');
 
 if (nameInput && emailInput && passwordInput && confirmPasswordInput && signUpForm && nameInvalidFeedback && emailInvalidFeedback && passwordInvalidFeedback && confirmPasswordInvalidFeedback) {
-    // const toasterService = new ToasterService(3000);
+    const toasterService = new ToasterService(3000);
+    const apiService = new UsersApiService(toasterService);
 
-    const signInFormService = new SignUpFormService(signUpForm, nameInput, emailInput, passwordInput, confirmPasswordInput, nameInvalidFeedback, emailInvalidFeedback, passwordInvalidFeedback, confirmPasswordInvalidFeedback);
+    const signInFormService = new SignUpFormService(signUpForm, apiService, nameInput, emailInput, passwordInput, confirmPasswordInput, nameInvalidFeedback, emailInvalidFeedback, passwordInvalidFeedback, confirmPasswordInvalidFeedback);
     void signInFormService.handleSubmitEvent();
     void signInFormService.handleNameKeyUp();
     void signInFormService.handleEmailKeyUp();

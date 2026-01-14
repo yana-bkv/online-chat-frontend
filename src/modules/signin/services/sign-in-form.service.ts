@@ -12,6 +12,14 @@ export default class SignInFormService {
         private apiService: UsersApiServiceInterface
         ) {}
 
+    initEmailInputValue() {
+        const params = new URLSearchParams(location.search);
+        const paramEmail = params?.get('email');
+        if (paramEmail) {
+            this.emailInput.value = paramEmail;
+        }
+    }
+
     async handleSubmitEvent() {
         this.signInForm?.addEventListener('submit', async (e) => {
             e.preventDefault();
