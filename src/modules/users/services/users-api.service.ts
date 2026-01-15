@@ -1,4 +1,9 @@
-import {UsersApiServiceInterface, UsersLoginResponse, UsersRegisterResponse} from "./users-api.types";
+import {
+    UsersApiServiceInterface,
+    UsersLoginResponse,
+    UsersProfileResponse,
+    UsersRegisterResponse
+} from "./users-api.types";
 import {ToasterServiceInterface} from "../../../shared/services/toaster.service";
 import axios, {AxiosError} from "axios";
 
@@ -24,6 +29,27 @@ export default class UsersApiService implements UsersApiServiceInterface {
     async register(name: string, email:string, password: string, confirmPassword: string): Promise<UsersRegisterResponse | undefined> {
         try {
             const response = await axios.post<UsersRegisterResponse>('http://localhost:3000/users/register', { name, email, password, confirmPassword });
+            return response.data
+        }
+        catch (error) {
+            if (error instanceof AxiosError) {
+                this.toasterService.showError(error?.response?.data?.message || 'Server error')
+            } else {
+                console.error(error);
+                this.toasterService.showError('Error')
+
+            }
+        }
+    }
+
+    async profile(accessToken: string): Promise<UsersProfileResponse | undefined> {
+        try {
+            const response = await axios.get<UsersProfileResponse>('http://localhost:3000/users/profile',
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                });
             return response.data
         }
         catch (error) {

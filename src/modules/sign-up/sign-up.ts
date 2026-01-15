@@ -3,6 +3,8 @@ import 'bootstrap/dist/js/bootstrap.min.js';
 import SignUpFormService from "./services/sign-up-form.service";
 import UsersApiService from "../users/services/users-api.service";
 import ToasterService from "../../shared/services/toaster.service";
+import PublicPageGuardService from "../guards/services/public-page-guard.service";
+import LocalStorageService from "../../shared/services/storage.service";
 
 const signUpForm: HTMLFormElement | null = document.querySelector('#signUpForm');
 
@@ -16,10 +18,14 @@ const emailInvalidFeedback: HTMLDivElement | null = document.querySelector('#ema
 const passwordInvalidFeedback: HTMLDivElement | null = document.querySelector('#passwordInvalidFeedback');
 const confirmPasswordInvalidFeedback: HTMLDivElement | null = document.querySelector('#confirmPasswordInvalidFeedback');
 
-if (nameInput && emailInput && passwordInput && confirmPasswordInput && signUpForm && nameInvalidFeedback && emailInvalidFeedback && passwordInvalidFeedback && confirmPasswordInvalidFeedback) {
-    const toasterService = new ToasterService(3000);
-    const apiService = new UsersApiService(toasterService);
+const toasterService = new ToasterService(3000);
+const apiService = new UsersApiService(toasterService);
+const storageService = new LocalStorageService();
 
+const publicPageGuardService = new PublicPageGuardService(apiService, storageService);
+void publicPageGuardService.init();
+
+if (nameInput && emailInput && passwordInput && confirmPasswordInput && signUpForm && nameInvalidFeedback && emailInvalidFeedback && passwordInvalidFeedback && confirmPasswordInvalidFeedback) {
     const signInFormService = new SignUpFormService(signUpForm, apiService, nameInput, emailInput, passwordInput, confirmPasswordInput, nameInvalidFeedback, emailInvalidFeedback, passwordInvalidFeedback, confirmPasswordInvalidFeedback);
     void signInFormService.handleSubmitEvent();
     void signInFormService.handleNameKeyUp();

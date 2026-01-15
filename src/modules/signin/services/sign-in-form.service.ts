@@ -42,7 +42,6 @@ export default class SignInFormService {
     }
 
     async login() {
-
         try {
             const email = this.emailInput.value.trim();
             const password = this.passwordInput.value.trim();
