@@ -65,6 +65,10 @@ export default class SignInFormService {
 
             if (data?.accessToken) {
                 this.storageService.addToStorage('accessToken', data.accessToken)
+
+                const from = this.storageService.getFromStorage('from');
+                this.storageService.removeFromStorage('from');
+                location.href = from || '/';
             }
 
         }

@@ -15,6 +15,7 @@ export default class AuthPageGuardService implements AuthPageGuardServiceInterfa
         const data = await this.getProfile()
 
         if (!data) {
+            this.storageService.addToStorage('from', location.pathname)
             location.href = '/sign-in'
         }
     }
