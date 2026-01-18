@@ -6,16 +6,20 @@ import {
 } from "./users-api.types";
 import {ToasterServiceInterface} from "../../../shared/services/toaster.service";
 import axios, {AxiosError} from "axios";
+import {StorageServiceInterface} from "../../../shared/services/storage.service";
 
 export default class UsersApiService implements UsersApiServiceInterface {
-    constructor(private toasterService: ToasterServiceInterface) {}
+    constructor(private toasterService: ToasterServiceInterface, private storageSerivce: StorageServiceInterface) {
+    }
 
-    async login(email:string, password: string): Promise<UsersLoginResponse | undefined> {
+    async login(email: string, password: string): Promise<UsersLoginResponse | undefined> {
         try {
-            const response = await axios.post<UsersLoginResponse>('http://localhost:3000/users/login', { email: email, password: password });
+            const response = await axios.post<UsersLoginResponse>('http://localhost:3000/users/login', {
+                email: email,
+                password: password
+            });
             return response.data
-        }
-        catch (error) {
+        } catch (error) {
             if (error instanceof AxiosError) {
                 this.toasterService.showError(error?.response?.data?.message || 'Server error')
             } else {
@@ -26,12 +30,16 @@ export default class UsersApiService implements UsersApiServiceInterface {
         }
     }
 
-    async register(name: string, email:string, password: string, confirmPassword: string): Promise<UsersRegisterResponse | undefined> {
+    async register(name: string, email: string, password: string, confirmPassword: string): Promise<UsersRegisterResponse | undefined> {
         try {
-            const response = await axios.post<UsersRegisterResponse>('http://localhost:3000/users/register', { name, email, password, confirmPassword });
+            const response = await axios.post<UsersRegisterResponse>('http://localhost:3000/users/register', {
+                name,
+                email,
+                password,
+                confirmPassword
+            });
             return response.data
-        }
-        catch (error) {
+        } catch (error) {
             if (error instanceof AxiosError) {
                 this.toasterService.showError(error?.response?.data?.message || 'Server error')
             } else {
@@ -42,23 +50,24 @@ export default class UsersApiService implements UsersApiServiceInterface {
         }
     }
 
-    async profile(accessToken: string): Promise<UsersProfileResponse | undefined> {
+    async profile(): Promise<UsersProfileResponse | undefined> {
         try {
-            const response = await axios.get<UsersProfileResponse>('http://localhost:3000/users/profile',
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`
-                    }
-                });
-            return response.data
-        }
-        catch (error) {
+            const accessToken = this.storageSerivce.getFromStorage('accessToken');
+            if (accessToken) {
+                const response = await axios.get<UsersProfileResponse>('http://localhost:3000/users/profile',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`
+                        }
+                    });
+                return response.data
+            }
+        } catch (error) {
             if (error instanceof AxiosError) {
                 this.toasterService.showError(error?.response?.data?.message || 'Server error')
             } else {
                 console.error(error);
                 this.toasterService.showError('Error')
-
             }
         }
     }

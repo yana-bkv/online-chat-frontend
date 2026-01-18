@@ -15,6 +15,7 @@ export default class AuthPageGuardService implements AuthPageGuardServiceInterfa
         const data = await this.getProfile()
 
         if (!data) {
+            this.storageService.removeFromStorage('accessToken');
             this.storageService.addToStorage('from', location.pathname)
             location.href = '/sign-in'
         }
@@ -22,10 +23,7 @@ export default class AuthPageGuardService implements AuthPageGuardServiceInterfa
 
     private async getProfile() {
         try {
-            const accessToken = this.storageService.getFromStorage('accessToken');
-            if (accessToken) {
-                return await this.apiService.profile(accessToken)
-            }
+            return await this.apiService.profile()
 
         } catch  (error) {
             if (error) {

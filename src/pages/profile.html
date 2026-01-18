@@ -11,15 +11,27 @@
 </head>
 <body>
 <header>
-	<nav class="navbar navbar-expand-lg bg-body-tertiary">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="/">Online chat</a>
-			<a href="/sign-in"><button class="btn btn-outline-success" type="submit">Sign in</button></a>
-		</div>
-	</nav>
 </header>
 <main class="container-lg">
-	<h1 class="mb-2">Profile</h1>
+	<form id="signUpForm" class="sign-up-form">
+		<fieldset>
+			<legend class="heading pt-4"><h2>Profile</h2></legend>
+
+			<div class="mb-3 row">
+				<label for="nameInput" class="col-sm-2 col-form-label">Name</label>
+				<div class="col-sm-10">
+					<input readonly type="text" class="form-control" id="nameInput" aria-describedby="nameHelp">
+				</div>
+			</div>
+
+			<div class="mb-3 row">
+				<label for="emailInput" class="col-sm-2 col-form-label">Email address</label>
+				<div class="col-sm-10">
+					<input readonly type="email" class="form-control" id="emailInput" aria-describedby="emailHelp">
+				</div>
+			</div>
+		</fieldset>
+	</form>
 </main>
 <footer>
 

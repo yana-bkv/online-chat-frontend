@@ -19,8 +19,8 @@ const passwordInvalidFeedback: HTMLDivElement | null = document.querySelector('#
 const confirmPasswordInvalidFeedback: HTMLDivElement | null = document.querySelector('#confirmPasswordInvalidFeedback');
 
 const toasterService = new ToasterService(3000);
-const apiService = new UsersApiService(toasterService);
 const storageService = new LocalStorageService();
+const apiService = new UsersApiService(toasterService, storageService);
 
 const publicPageGuardService = new PublicPageGuardService(apiService, storageService);
 void publicPageGuardService.init();
