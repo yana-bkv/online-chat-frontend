@@ -1,2 +1,6 @@
 @use 'bootstrap/scss/bootstrap';
 @use "toastify-js/src/toastify.css";
+
+.hidden {
+  display: none;
+}

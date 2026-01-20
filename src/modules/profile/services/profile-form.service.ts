@@ -1,19 +1,102 @@
 import {UsersApiServiceInterface} from "../../users/services/users-api.types";
 
 export default class ProfileFormService {
+    private name: string = '';
+    private email: string = '';
+
     constructor(
-        private apiService: UsersApiServiceInterface,
+        private usersApiService: UsersApiServiceInterface,
 
         private nameInput: HTMLInputElement,
-        private emailInput: HTMLInputElement
+        private emailInput: HTMLInputElement,
+
+        private editButton: HTMLButtonElement,
+        private cancelButton: HTMLButtonElement,
+        private submitButton: HTMLButtonElement
     ) {
     }
 
     async init() {
-        const userProfile = await this.apiService.profile();
-        if (userProfile) {
-            this.nameInput.value = userProfile.name || '';
-            this.emailInput.value = userProfile.email || '';
+        try {
+            await this.initInputsData();
+            this.handleStartEditingEvent();
+            this.handleStopEditingEvent();
+            this.handleSubmitEvent();
+        } catch (error: Error | unknown) {
+            console.error(error)
         }
+    }
+
+    private async initInputsData() {
+        await this.fetchProfileData()
+
+        this.nameInput.defaultValue = this.name
+        this.emailInput.defaultValue = this.email
+    }
+
+    private async fetchProfileData() {
+        const userProfile = await this.usersApiService.profile();
+
+        if (userProfile) {
+            this.name = userProfile.name || ''
+            this.email = userProfile.email || ''
+        }
+    }
+
+
+    private async fetchUpdateProfile() {
+        const trimmedName = this.nameInput.value.trim();
+        if (!trimmedName) {
+            alert('Please enter name')
+            return false
+        }
+
+        const response = await this.usersApiService.updateProfile(trimmedName);
+        if (response?.message) {
+            alert(response.message);
+            return true
+        }
+    }
+
+    private startEditing() {
+        this.nameInput.readOnly = false;
+
+        this.editButton.classList.add('hidden');
+        this.cancelButton.classList.remove('hidden');
+        this.submitButton.classList.remove('hidden');
+    }
+
+    private stopEditing() {
+        this.nameInput.readOnly = true;
+        this.nameInput.value = this.nameInput.defaultValue;
+
+        this.editButton.classList.remove('hidden');
+        this.cancelButton.classList.add('hidden');
+        this.submitButton.classList.add('hidden');
+    }
+
+    private handleStartEditingEvent() {
+        this.editButton.addEventListener('click', () => {
+            this.startEditing()
+        })
+    }
+
+    private handleStopEditingEvent() {
+        this.cancelButton.addEventListener('click', () => {
+            this.stopEditing()
+        })
+    }
+
+    private handleSubmitEvent() {
+        this.submitButton.addEventListener('click', async () => {
+           const editedSuccessfully = await this.fetchUpdateProfile();
+
+           if (!editedSuccessfully) {
+               return
+           }
+
+           await this.initInputsData();
+           this.stopEditing();
+        })
     }
 }

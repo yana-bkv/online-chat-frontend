@@ -2,7 +2,7 @@ import {
     UsersApiServiceInterface,
     UsersLoginResponse,
     UsersProfileResponse,
-    UsersRegisterResponse
+    UsersRegisterResponse, UsersUpdateProfileResponse
 } from "./users-api.types";
 import {ToasterServiceInterface} from "../../../shared/services/toaster.service";
 import axios, {AxiosError} from "axios";
@@ -55,6 +55,30 @@ export default class UsersApiService implements UsersApiServiceInterface {
             const accessToken = this.storageSerivce.getFromStorage('accessToken');
             if (accessToken) {
                 const response = await axios.get<UsersProfileResponse>('http://localhost:3000/users/profile',
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`
+                        }
+                    });
+                return response.data
+            }
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                this.toasterService.showError(error?.response?.data?.message || 'Server error')
+            } else {
+                console.error(error);
+                this.toasterService.showError('Error')
+            }
+        }
+    }
+
+    async updateProfile(name: string): Promise<UsersUpdateProfileResponse | undefined> {
+        try {
+            const accessToken = this.storageSerivce.getFromStorage('accessToken');
+            if (accessToken) {
+                const response = await axios.patch<UsersUpdateProfileResponse>('http://localhost:3000/users/profile', {
+                    name
+                    } ,
                     {
                         headers: {
                             Authorization: `Bearer ${accessToken}`
