@@ -21,7 +21,7 @@ const publicPageGuardService = new PublicPageGuardService(apiService, storageSer
 void publicPageGuardService.init();
 
 if (emailInput && passwordInput && signInForm && emailInvalidFeedback && passwordInvalidFeedback) {
-    const signInFormService = new SignInFormService(signInForm, emailInput, emailInvalidFeedback, passwordInput, passwordInvalidFeedback, storageService, apiService);
+    const signInFormService = new SignInFormService(storageService, apiService, toasterService,signInForm, emailInput, emailInvalidFeedback, passwordInput, passwordInvalidFeedback);
     void signInFormService.initEmailInputValue();
 
     void signInFormService.handleSubmitEvent();

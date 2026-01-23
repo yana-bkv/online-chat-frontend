@@ -1,4 +1,5 @@
 import {UsersApiServiceInterface} from "../../users/services/users-api.types";
+import {ToasterServiceInterface} from "../../../shared/services/toaster.service";
 
 export default class ProfileFormService {
     private name: string = '';
@@ -6,9 +7,12 @@ export default class ProfileFormService {
 
     constructor(
         private usersApiService: UsersApiServiceInterface,
+        private toasterService: ToasterServiceInterface,
 
         private nameInput: HTMLInputElement,
         private emailInput: HTMLInputElement,
+
+        private nameValidationFeedback: HTMLDivElement,
 
         private editButton: HTMLButtonElement,
         private cancelButton: HTMLButtonElement,
@@ -22,6 +26,7 @@ export default class ProfileFormService {
             this.handleStartEditingEvent();
             this.handleStopEditingEvent();
             this.handleSubmitEvent();
+            this.addEventToNameKeyDownEvent();
         } catch (error: Error | unknown) {
             console.error(error)
         }
@@ -47,13 +52,15 @@ export default class ProfileFormService {
     private async fetchUpdateProfile() {
         const trimmedName = this.nameInput.value.trim();
         if (!trimmedName) {
-            alert('Please enter name')
+            this.nameInput.classList.add('is-invalid');
+            this.nameValidationFeedback.innerText = 'Please enter name';
             return false
         }
 
         const response = await this.usersApiService.updateProfile(trimmedName);
+
         if (response?.message) {
-            alert(response.message);
+            this.toasterService.showSuccess(response.message);
             return true
         }
     }
@@ -97,6 +104,13 @@ export default class ProfileFormService {
 
            await this.initInputsData();
            this.stopEditing();
+        })
+    }
+
+    private addEventToNameKeyDownEvent() {
+        this.nameInput.addEventListener('keydown', async () => {
+            this.nameInput.classList.remove('is-invalid');
+            this.nameValidationFeedback.innerText = '';
         })
     }
 }

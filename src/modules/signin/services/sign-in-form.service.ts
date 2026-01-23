@@ -1,15 +1,18 @@
 import {StorageServiceInterface} from "../../../shared/services/storage.service";
 import {UsersApiServiceInterface} from "../../users/services/users-api.types";
+import {ToasterServiceInterface} from "../../../shared/services/toaster.service";
 
 export default class SignInFormService {
     constructor(
+        private storageService: StorageServiceInterface,
+        private apiService: UsersApiServiceInterface,
+        private toasterService: ToasterServiceInterface,
+
         private signInForm: HTMLFormElement,
         private emailInput: HTMLInputElement,
         private emailInvalidFeedback: HTMLDivElement,
         private passwordInput: HTMLInputElement,
         private passwordInvalidFeedback: HTMLDivElement,
-        private storageService: StorageServiceInterface,
-        private apiService: UsersApiServiceInterface
         ) {}
 
     initEmailInputValue() {
@@ -17,6 +20,7 @@ export default class SignInFormService {
         const paramEmail = params?.get('email');
         if (paramEmail) {
             this.emailInput.value = paramEmail;
+            this.toasterService.showSuccess("User had registered successfully! Enter password to continue.")
         }
     }
 
@@ -65,6 +69,7 @@ export default class SignInFormService {
 
             if (data?.accessToken) {
                 this.storageService.addToStorage('accessToken', data.accessToken)
+                this.storageService.addToStorage('loginSuccess', 'true');
 
                 const from = this.storageService.getFromStorage('from');
                 this.storageService.removeFromStorage('from');

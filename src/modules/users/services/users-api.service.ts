@@ -38,14 +38,13 @@ export default class UsersApiService implements UsersApiServiceInterface {
                 password,
                 confirmPassword
             });
-            return response.data
+            return response.data;
         } catch (error) {
             if (error instanceof AxiosError) {
                 this.toasterService.showError(error?.response?.data?.message || 'Server error')
             } else {
                 console.error(error);
                 this.toasterService.showError('Error')
-
             }
         }
     }

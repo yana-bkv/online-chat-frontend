@@ -16,3 +16,11 @@ const navbarComponent = new NavbarComponent(headerEl, usersApiService, storageSe
 if (headerEl) {
     navbarComponent.render()
 }
+
+// SHOW TOASTER TO JUST LOGGED IN USER
+const loginSuccess = storageService.getFromStorage('loginSuccess');
+
+if (loginSuccess) {
+    toasterService.showSuccess('Welcome back!');
+    storageService.removeFromStorage('loginSuccess');
+}

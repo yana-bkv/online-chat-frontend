@@ -16,11 +16,12 @@ void authPageGuardService.init();
 // PROFILE DATA
 const nameInput: HTMLInputElement | null = document.querySelector('#nameInput');
 const emailInput: HTMLInputElement | null  = document.querySelector('#emailInput')
+const nameValidationFeedback: HTMLDivElement | null = document.querySelector('#nameInputValidationFeedback');
 const editButton: HTMLButtonElement | null = document.querySelector("#editButton");
 const cancelButton: HTMLButtonElement | null = document.querySelector("#cancelButton");
 const submitButton: HTMLButtonElement | null = document.querySelector("#submitButton");
 
-if (nameInput && emailInput && usersApiService && editButton && cancelButton && submitButton) {
-    const profileData = new ProfileFormService(usersApiService, nameInput, emailInput, editButton, cancelButton, submitButton)
+if (nameInput && emailInput && nameValidationFeedback && usersApiService && editButton && cancelButton && submitButton) {
+    const profileData = new ProfileFormService(usersApiService, toasterService, nameInput, emailInput, nameValidationFeedback, editButton, cancelButton, submitButton)
     void profileData.init();
 }
