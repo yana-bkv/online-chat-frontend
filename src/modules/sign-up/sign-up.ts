@@ -5,6 +5,7 @@ import UsersApiService from "../users/services/users-api.service";
 import ToasterService from "../../shared/services/toaster.service";
 import PublicPageGuardService from "../guards/services/public-page-guard.service";
 import LocalStorageService from "../../shared/services/storage.service";
+import UserContextService from "../users/services/user-context.service";
 
 const signUpForm: HTMLFormElement | null = document.querySelector('#signUpForm');
 
@@ -21,8 +22,9 @@ const confirmPasswordInvalidFeedback: HTMLDivElement | null = document.querySele
 const toasterService = new ToasterService(3000);
 const storageService = new LocalStorageService();
 const apiService = new UsersApiService(toasterService, storageService);
+const userContextService = new UserContextService(storageService, apiService);
 
-const publicPageGuardService = new PublicPageGuardService(apiService, storageService);
+const publicPageGuardService = new PublicPageGuardService(userContextService, storageService);
 void publicPageGuardService.init();
 
 if (nameInput && emailInput && passwordInput && confirmPasswordInput && signUpForm && nameInvalidFeedback && emailInvalidFeedback && passwordInvalidFeedback && confirmPasswordInvalidFeedback) {

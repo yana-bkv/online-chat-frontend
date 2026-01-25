@@ -1,5 +1,6 @@
-import {UsersApiServiceInterface} from "../../users/services/users-api.types";
+import {UsersApiServiceInterface, UsersProfileResponse} from "../../users/services/users-api.types";
 import {ToasterServiceInterface} from "../../../shared/services/toaster.service";
+import {UserContextServiceInterface} from "../../users/services/user-context.service";
 
 export default class ProfileFormService {
     private name: string = '';
@@ -8,6 +9,7 @@ export default class ProfileFormService {
     constructor(
         private usersApiService: UsersApiServiceInterface,
         private toasterService: ToasterServiceInterface,
+        private userContextService: UserContextServiceInterface,
 
         private nameInput: HTMLInputElement,
         private emailInput: HTMLInputElement,
@@ -22,7 +24,12 @@ export default class ProfileFormService {
 
     async init() {
         try {
-            await this.initInputsData();
+            this.userContextService.subscribe((userProfile) => {
+                this.updateFormData(userProfile);
+            })
+
+            await this.updateFormData(this.userContextService.getUser());
+
             this.handleStartEditingEvent();
             this.handleStopEditingEvent();
             this.handleSubmitEvent();
@@ -32,19 +39,17 @@ export default class ProfileFormService {
         }
     }
 
-    private async initInputsData() {
-        await this.fetchProfileData()
-
-        this.nameInput.defaultValue = this.name
-        this.emailInput.defaultValue = this.email
-    }
-
-    private async fetchProfileData() {
-        const userProfile = await this.usersApiService.profile();
-
+    private async updateFormData(userProfile: UsersProfileResponse | null) {
         if (userProfile) {
             this.name = userProfile.name || ''
             this.email = userProfile.email || ''
+            this.nameInput.defaultValue = this.name
+            this.emailInput.defaultValue = this.email
+
+            if (this.nameInput.readOnly) {
+                this.nameInput.value = this.name
+                this.emailInput.value = this.email
+            }
         }
     }
 
@@ -102,7 +107,7 @@ export default class ProfileFormService {
                return
            }
 
-           await this.initInputsData();
+           await this.userContextService.fetchUser()
            this.stopEditing();
         })
     }

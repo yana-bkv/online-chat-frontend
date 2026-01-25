@@ -1,5 +1,6 @@
-import {UsersApiServiceInterface} from "../../users/services/users-api.types";
-import LocalStorageService, {StorageServiceInterface} from "../../../shared/services/storage.service";
+import {UsersApiServiceInterface, UsersProfileResponse} from "../../users/services/users-api.types";
+import {StorageServiceInterface} from "../../../shared/services/storage.service";
+import UserContextService from "../../users/services/user-context.service";
 
 export interface NavbarComponentInterface {
     render: () => void
@@ -15,11 +16,21 @@ export default class NavbarComponent implements NavbarComponentInterface {
     private ulEl: HTMLUListElement | null = null
     private signInLinkEl: HTMLAnchorElement | null = null
     private signInButtonEl: HTMLButtonElement | null = null
+    private dropdownEl: HTMLDivElement | null = null
 
     private headerEl: HTMLElement | null = null
 
-    constructor(headerEl: HTMLElement | null = null, private userApiService: UsersApiServiceInterface, private localStorage: StorageServiceInterface) {
+    constructor(
+        headerEl: HTMLElement | null = null,
+        private userApiService: UsersApiServiceInterface,
+        private localStorage: StorageServiceInterface,
+        private userContextService: UserContextService,
+        ) {
         this.headerEl = headerEl
+
+        this.userContextService.subscribe((userData) => {
+            this.updateDropdown(userData);
+        })
     }
 
     async render() {
@@ -42,16 +53,25 @@ export default class NavbarComponent implements NavbarComponentInterface {
             this.collapseDiv.appendChild(this.ulEl);
             this.collapseDiv.appendChild(this.signInLinkEl);
 
-            const userProfile = await this.userApiService.profile();
+            const userProfile = await this.userContextService.fetchUser();
 
             if (userProfile) {
                 const dropdownEl = this.createDropdownEl(userProfile.name);
+                this.dropdownEl = dropdownEl
                 this.signInLinkEl.appendChild(dropdownEl);
             } else {
                 this.signInLinkEl.appendChild(this.signInButtonEl)
             }
 
             this.headerEl.appendChild(this.navEl);
+        }
+    }
+
+    private updateDropdown(userProfile: UsersProfileResponse | null) {
+        this.userContextService.fetchUser();
+        if (userProfile && this.dropdownEl) {
+            const buttonInDropdown = this.dropdownEl.querySelector('button') as HTMLButtonElement
+            buttonInDropdown.innerText = userProfile?.name || 'Username';
         }
     }
 
@@ -129,16 +149,6 @@ export default class NavbarComponent implements NavbarComponentInterface {
     }
 
     private createDropdownEl(username: string | null) {
-        // <div class="btn-group">
-        // <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        //     Right-aligned menu
-        // </button>
-        // <ul class="dropdown-menu dropdown-menu-end">
-        // <li><a class="dropdown-item" href="#">Menu item</a></li>
-        // <li><a class="dropdown-item" href="#">Menu item</a></li>
-        // <li><a class="dropdown-item" href="#">Menu item</a></li>
-        // </ul>
-        // </div>
         const dropdownDiv = document.createElement('div')
         dropdownDiv.className = 'btn-group';
 
@@ -177,6 +187,7 @@ export default class NavbarComponent implements NavbarComponentInterface {
 
     private logout() {
         this.localStorage.removeFromStorage('accessToken')
+        this.localStorage.removeFromStorage('userProfile')
         window.location.reload();
     }
 }

@@ -1,5 +1,5 @@
-import UsersApiService from "../../users/services/users-api.service";
 import LocalStorageService from "../../../shared/services/storage.service";
+import UserContextService from "../../users/services/user-context.service";
 
 export interface PublicPageGuardServiceInterface {
     init(): void;
@@ -7,28 +7,18 @@ export interface PublicPageGuardServiceInterface {
 
 export default class PublicPageGuardService implements PublicPageGuardServiceInterface {
     constructor (
-        private apiService: UsersApiService,
+        private userContextService: UserContextService,
         private storageService: LocalStorageService,
     ) {}
 
     async init() {
-        const data = await this.getProfile()
+        await this.userContextService.fetchUser();
 
-        if (data) {
+        if (this.userContextService.isAuthenticated()) {
             location.href = '/profile'
         }
         else {
             this.storageService.removeFromStorage('accessToken');
-        }
-    }
-
-    private async getProfile() {
-        try {
-            return await this.apiService.profile()
-        } catch  (error) {
-            if (error) {
-                console.error(error);
-            }
         }
     }
 }

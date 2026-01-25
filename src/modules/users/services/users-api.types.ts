@@ -1,7 +1,7 @@
 export interface UsersApiServiceInterface {
     login(email: string, password: string): Promise<UsersLoginResponse | undefined>;
     register(name: string, email: string, password: string, confirmPassword: string): Promise<UsersRegisterResponse | undefined>;
-    profile(): Promise<UsersProfileResponse | undefined>;
+    profile(): Promise<UsersProfileResponse | null>;
     updateProfile(name: string): Promise<UsersUpdateProfileResponse | undefined>
 }
 
@@ -9,7 +9,6 @@ export interface UsersLoginResponse {
     accessToken: string;
     refreshToken: string;
 }
-
 
 export interface UsersRegisterResponse {
     id: number;

@@ -9,7 +9,7 @@ import axios, {AxiosError} from "axios";
 import {StorageServiceInterface} from "../../../shared/services/storage.service";
 
 export default class UsersApiService implements UsersApiServiceInterface {
-    constructor(private toasterService: ToasterServiceInterface, private storageSerivce: StorageServiceInterface) {
+    constructor(private toasterService: ToasterServiceInterface, private storageService: StorageServiceInterface) {
     }
 
     async login(email: string, password: string): Promise<UsersLoginResponse | undefined> {
@@ -49,9 +49,9 @@ export default class UsersApiService implements UsersApiServiceInterface {
         }
     }
 
-    async profile(): Promise<UsersProfileResponse | undefined> {
+    async profile(): Promise<UsersProfileResponse | null> {
         try {
-            const accessToken = this.storageSerivce.getFromStorage('accessToken');
+            const accessToken = this.storageService.getFromStorage('accessToken');
             if (accessToken) {
                 const response = await axios.get<UsersProfileResponse>('http://localhost:3000/users/profile',
                     {
@@ -69,11 +69,12 @@ export default class UsersApiService implements UsersApiServiceInterface {
                 this.toasterService.showError('Error')
             }
         }
+        return null
     }
 
     async updateProfile(name: string): Promise<UsersUpdateProfileResponse | undefined> {
         try {
-            const accessToken = this.storageSerivce.getFromStorage('accessToken');
+            const accessToken = this.storageService.getFromStorage('accessToken');
             if (accessToken) {
                 const response = await axios.patch<UsersUpdateProfileResponse>('http://localhost:3000/users/profile', {
                     name
