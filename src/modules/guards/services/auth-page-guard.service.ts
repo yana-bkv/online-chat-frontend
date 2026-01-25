@@ -1,5 +1,5 @@
 import LocalStorageService from "../../../shared/services/storage.service";
-import {UserContextServiceInterface} from "../../users/services/user-context.service";
+import {UserContextServiceInterface} from "../../../shared/services/user-context.service";
 
 export interface AuthPageGuardServiceInterface {
     init(): void;

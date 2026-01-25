@@ -1,5 +1,5 @@
-import {UsersApiServiceInterface, UsersProfileResponse} from "./users-api.types";
-import {StorageServiceInterface} from "../../../shared/services/storage.service";
+import {UsersApiServiceInterface, UsersProfileResponse} from "../../modules/users/services/users-api.types";
+import {StorageServiceInterface} from "./storage.service";
 
 export interface UserContextServiceInterface {
     getUser(): UsersProfileResponse | null;
@@ -45,13 +45,13 @@ export default class UserContextService implements UserContextServiceInterface {
         return this.userData
     }
 
-    subscribe(callback: (userData: UsersProfileResponse | null) => void): () => void {
-        this.subscribers.add(callback);
+    subscribe(callback: (userData: (UsersProfileResponse | null)) => void): () => void {
+        this.subscribers.add(callback)
 
-        callback(this.userData);
+        callback(this.userData)
 
         return () => {
-            this.subscribers.delete(callback);
+            this.subscribers.delete(callback)
         }
     }
 

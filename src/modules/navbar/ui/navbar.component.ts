@@ -1,6 +1,6 @@
 import {UsersApiServiceInterface, UsersProfileResponse} from "../../users/services/users-api.types";
 import {StorageServiceInterface} from "../../../shared/services/storage.service";
-import UserContextService from "../../users/services/user-context.service";
+import UserContextService from "../../../shared/services/user-context.service";
 
 export interface NavbarComponentInterface {
     render: () => void
@@ -29,7 +29,7 @@ export default class NavbarComponent implements NavbarComponentInterface {
         this.headerEl = headerEl
 
         this.userContextService.subscribe((userData) => {
-            this.updateDropdown(userData);
+            this.updateDropdown(userData)
         })
     }
 
@@ -68,7 +68,7 @@ export default class NavbarComponent implements NavbarComponentInterface {
     }
 
     private updateDropdown(userProfile: UsersProfileResponse | null) {
-        this.userContextService.fetchUser();
+        // this.userContextService.fetchUser();
         if (userProfile && this.dropdownEl) {
             const buttonInDropdown = this.dropdownEl.querySelector('button') as HTMLButtonElement
             buttonInDropdown.innerText = userProfile?.name || 'Username';

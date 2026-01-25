@@ -3,13 +3,12 @@ import ToasterService from "../../shared/services/toaster.service";
 import UsersApiService from "../users/services/users-api.service";
 import LocalStorageService from "../../shared/services/storage.service";
 import ProfileFormService from "./services/profile-form.service";
-import UserContextService from "../users/services/user-context.service";
+import {userContextService} from "../../shared/services/user-context.instance";
 
 // SERVICES
 const toasterService = new ToasterService(3000);
 const storageService = new LocalStorageService()
 const usersApiService = new UsersApiService(toasterService, storageService)
-const userContextService = new UserContextService(storageService, usersApiService);
 
 // AUTH PAGE GUARD
 const authPageGuardService = new AuthPageGuardService(storageService, userContextService)

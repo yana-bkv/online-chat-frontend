@@ -1,6 +1,6 @@
 import {UsersApiServiceInterface, UsersProfileResponse} from "../../users/services/users-api.types";
 import {ToasterServiceInterface} from "../../../shared/services/toaster.service";
-import {UserContextServiceInterface} from "../../users/services/user-context.service";
+import {UserContextServiceInterface} from "../../../shared/services/user-context.service";
 
 export default class ProfileFormService {
     private name: string = '';
