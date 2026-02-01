@@ -1,8 +1,9 @@
 export interface UsersApiServiceInterface {
     login(email: string, password: string): Promise<UsersLoginResponse | undefined>;
     register(name: string, email: string, password: string, confirmPassword: string): Promise<UsersRegisterResponse | undefined>;
-    profile(): Promise<UsersProfileResponse | null>;
-    updateProfile(name: string): Promise<UsersUpdateProfileResponse | undefined>
+    profile(): Promise<UsersProfileResponse | undefined>;
+    updateProfile(name: string): Promise<UsersUpdateProfileResponse | undefined>;
+    logout(): Promise<UsersLogoutResponse | undefined>;
 }
 
 export interface UsersLoginResponse {
@@ -23,5 +24,9 @@ export interface UsersProfileResponse {
 }
 
 export interface UsersUpdateProfileResponse {
+    message: string;
+}
+
+export interface UsersLogoutResponse {
     message: string;
 }

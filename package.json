@@ -15,12 +15,14 @@
     "@types/node": "^24.9.1",
     "buffer": "^6.0.3",
     "parcel": "^2.16.0",
-    "sass": "^1.97.2",
+    "sass": "^1.97.3",
     "typescript": "^5.9.2"
   },
   "dependencies": {
     "axios": "^1.12.2",
     "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "socket.io-client": "^4.8.3",
     "toastify-js": "^1.12.0"
   }
 }

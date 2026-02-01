@@ -1,0 +1,140 @@
+body {
+  overflow-y: hidden;
+}
+
+.chat-container {
+  display: grid;
+  grid-template-columns: 300px 3fr;
+}
+
+.sidebar {
+  height: calc(100dvh - 56px);
+}
+
+.sidebar-header {
+  padding: 16px;
+
+  h2 {
+    font-size: 1.6rem;
+    margin-bottom: 0;
+    color: rgba(23, 73, 105, 0.9);
+    font-weight: bold;
+  }
+}
+
+.avatar {
+  background-color: rgba(23, 73, 105, 0.9);
+  border-radius: 50%;
+  color: #e3e3e3;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+
+  &:after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    border-radius: 50%;
+    bottom: 0;
+    right: 0;
+    border: 2px solid white;
+  }
+
+  &.online:after {
+    background-color: #5d8749;
+  }
+  &.do-not-disturb:after {
+    background-color: grey;
+  }
+  &.offline:after {
+    background-color: #e62626;
+  }
+}
+
+.last-message {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.message-info {
+  width: calc(100% - 66px);
+}
+
+// Container for messages
+.chat {
+  height: calc(100dvh - 56px);
+  background-color: #eee;
+  position: relative;
+  overflow-y: auto;
+}
+
+.chat-header {
+  padding: 16px 24px;
+  background-color: white;
+  border-bottom: 2px solid #eee;
+  border-left: 2px solid #eee;
+  position: sticky;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.chat-messages {
+  height: 100%;
+  padding: 24px;
+}
+
+.message-form {
+  position: sticky;
+  bottom: 0;
+  right: 0;
+  width: calc(100%);
+  padding: 16px;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  border-left: 1px solid #eee;
+
+  display: flex;
+  gap: 24px;
+}
+
+.message-bubble {
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 10px;
+  width: fit-content;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.my-message-bubble {
+  background-color: #246580;
+  margin-left: auto;
+}
+
+.user-message-bubble {
+  background-color: #878484;
+  margin-right: auto;
+}
+
+.message-time {
+  font-weight: 500;
+  color: darkgrey;
+  position: absolute;
+  top: 100%;
+}
+
+.my-message-time {
+  right: 5px;
+}
+
+.user-message-time {
+  left: 0;
+}

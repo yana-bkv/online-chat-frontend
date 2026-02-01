@@ -1,6 +1,6 @@
 import {
     UsersApiServiceInterface,
-    UsersLoginResponse,
+    UsersLoginResponse, UsersLogoutResponse,
     UsersProfileResponse,
     UsersRegisterResponse, UsersUpdateProfileResponse
 } from "./users-api.types";
@@ -49,27 +49,27 @@ export default class UsersApiService implements UsersApiServiceInterface {
         }
     }
 
-    async profile(): Promise<UsersProfileResponse | null> {
+    async profile(): Promise<UsersProfileResponse | undefined> {
         try {
-            const accessToken = this.storageService.getFromStorage('accessToken');
+            const accessToken = this.storageService.getFromStorage('accessToken')
             if (accessToken) {
-                const response = await axios.get<UsersProfileResponse>('http://localhost:3000/users/profile',
-                    {
-                        headers: {
-                            Authorization: `Bearer ${accessToken}`
-                        }
-                    });
+                const response = await axios.get<UsersProfileResponse>('http://localhost:3000/users/profile', {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`
+                    }
+                })
                 return response.data
             }
-        } catch (error) {
+        }
+        catch (error) {
             if (error instanceof AxiosError) {
-                this.toasterService.showError(error?.response?.data?.message || 'Server error')
-            } else {
-                console.error(error);
+                this.toasterService.showError(error?.response?.data?.message || 'Server Error')
+            }
+            else {
+                console.error(error)
                 this.toasterService.showError('Error')
             }
         }
-        return null
     }
 
     async updateProfile(name: string): Promise<UsersUpdateProfileResponse | undefined> {
@@ -94,5 +94,21 @@ export default class UsersApiService implements UsersApiServiceInterface {
                 this.toasterService.showError('Error')
             }
         }
+    }
+
+    async logout(): Promise<UsersLogoutResponse | undefined> {
+        try {
+            const accessToken = this.storageService.getFromStorage('accessToken');
+            if (accessToken) {
+                const response = await axios.post<UsersLogoutResponse>('http://localhost:3000/users/logout',
+                    {},
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`
+                        }
+                    });
+                return response.data
+            }
+        } catch {}
     }
 }

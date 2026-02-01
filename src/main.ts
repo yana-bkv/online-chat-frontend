@@ -1,6 +1,7 @@
 import 'bootstrap/dist/js/bootstrap.min.js';
 import './declare.d';
 import 'shared/services/user-context.instance'
+import "bootstrap-icons/font/bootstrap-icons.css";
 import NavbarComponent from "./modules/navbar/ui/navbar.component";
 import ToasterService from "./shared/services/toaster.service";
 import LocalStorageService from "./shared/services/storage.service";

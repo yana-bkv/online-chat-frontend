@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="../main.scss">
+	<script type="module" src="../main.ts"></script>
+
+	<link rel="stylesheet" href="../modules/chat/chat.scss">
+	<script type="module" src="../modules/chat/chat.ts"></script>
+	<title>Chat - Online chat</title>
+</head>
+<body>
+<header>
+</header>
+	<main class="chat-container">
+		<div class="sidebar">
+			<div class="sidebar-header"><h2>Messages</h2></div>
+			<div class="divider"></div>
+
+			<div>
+				<div class="list-group">
+
+					<a href="#" class="list-group-item list-group-item-action">
+						<div class="d-flex gap-3 align-items-center">
+							<div class="avatar online">AS</div>
+							<div class="message-info">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1">Aljona Shatkovskaja</h5>
+									<small>3 days ago</small>
+								</div>
+								<p class="mb-0 last-message">Some placeholder content in a paragraph. Placeholder content in a paragraph</p>
+							</div>
+						</div>
+					</a>
+
+					<a href="#" class="list-group-item list-group-item-action">
+						<div class="d-flex gap-3 align-items-center">
+						<div class="avatar offline">KL</div>
+						<div class="message-info">
+							<div class="d-flex w-100 justify-content-between">
+								<h5 class="mb-1">Kendra Lelov</h5>
+								<small>3 days ago</small>
+							</div>
+							<p class="mb-0 last-message">Some placeholder content in a paragraph.</p>
+						</div>
+						</div>
+					</a>
+
+					<a href="#" class="list-group-item list-group-item-action">
+						<div class="d-flex gap-3 align-items-center">
+							<div class="avatar do-not-disturb">AP</div>
+							<div class="message-info">
+								<div class="d-flex w-100 justify-content-between">
+									<h5 class="mb-1">Anna Peshehodko</h5>
+									<small>3 days ago</small>
+								</div>
+									<p class="mb-0 last-message">Some placeholder content in a paragraph.</p>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="chat">
+
+				<div class="chat-header d-flex gap-3 align-items-center">
+					<div class="avatar offline">KL</div>
+					<div class="message-info">
+						<div class="d-flex w-100 justify-content-between">
+							<h5 class="mb-1">Kendra Lelov</h5>
+							<small>3 days ago</small>
+						</div>
+						<small>Offline</small>
+					</div>
+				</div>
+
+			<div class="chat-messages">
+
+				<div class="message-bubble my-message-bubble">
+					<span>Message for example to show in a div</span>
+					<small class="message-time my-message-time">23:11</small>
+				</div>
+
+				<div class="message-bubble user-message-bubble">
+					<span>Another example message as another person</span>
+					<small class="message-time user-message-time">23:41</small>
+				</div>
+
+			</div>
+
+			<div class="message-form">
+				<label for="newMessageInput"></label><input type="text" class="form-control" id="newMessageInput" placeholder="Type your message here...">
+				<button type="button" class="btn btn-primary"><i class="bi bi-send-fill"></i></button>
+			</div>
+		</div>
+	</main>
+</body>
+</html>
